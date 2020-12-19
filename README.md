@@ -1,6 +1,9 @@
 
 # Coders HQ Backend
 
+![Django Test](https://github.com/ralsuwaidi/CHQ_Backend/workflows/Django%20Test/badge.svg)
+
+
 This repository holds the Coders-HQ backend. It is made using [Django](https://www.djangoproject.com/) and [Postgres](https://www.postgresql.org/) as an API backend to the Coders-HQ frontend (based on [React](https://reactjs.org/)) which is hosted [in this repo](https://github.com/Coders-HQ/CHQ_Frontend). The main Coders-HQ website is hosted at [codershq.ae](https://codershq.ae).
 
 Table of Contents
