@@ -11,9 +11,13 @@ class ProfileModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         # Set up non-modified objects used by all test methods
-        User.objects.create(username='testUsername',
-                            email='test@email.com',
-                            password='Bob').set_password("mynewPASS33")
+
+        user = User()
+        user.username = "testUsername"
+        user.set_password("mynewPASS33")
+        user.email = "test@email.com"
+        user.full_clean()
+        user.save()
 
     # Test profile model
 
