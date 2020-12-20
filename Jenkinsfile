@@ -4,17 +4,17 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh "docker-compose run --rm backend ./wait-for-it.sh db:5432"
-                sh "docker-compose run --rm backend python manage.py makemigrations users"
-                sh "docker-compose run --rm backend python manage.py migrate"
+                sh "docker-compose run --rm --name test_backend backend ./wait-for-it.sh db:5432"
+                sh "docker-compose run --rm backend test_backend python manage.py makemigrations users"
+                sh "docker-compose run --rm backend test_backend python manage.py migrate"
             }
         }
         stage('Test') {
             steps {
                 // run test
-                sh "docker-compose run --rm backend python manage.py test"
+                sh "docker-compose run --rm backend test_backend python manage.py test"
                 // create report
-                sh "docker-compose run --rm backend python manage.py jenkins"
+                sh "docker-compose run --rm backend test_backend python manage.py jenkins"
                 
             }
             
