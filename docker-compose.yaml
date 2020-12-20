@@ -3,6 +3,7 @@ version: "3.8"
 services:
   db:
     image: postgres
+    container_name: backend_postgres
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
@@ -11,6 +12,7 @@ services:
       - postgres_data:/var/lib/postgresql/data/
   backend:
     build: .
+    container_name: backend_django
     environment:
       - DJANGO_DATABASE=postgres
     command: >
@@ -26,6 +28,7 @@ services:
       - db
 
   docs:
+    container_name: mkdocs
     build: docs
     volumes: 
       - .:/docs
