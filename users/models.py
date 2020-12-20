@@ -46,6 +46,8 @@ class Profile(models.Model):
     def __str__(self):
         return "%s's profile" % (self.user)
 
+    # this property allows to search for the profile's user's username
+    # in the lookup_field
     @property
     def user__username(self):
         return self.user.username
@@ -65,7 +67,9 @@ class Profile(models.Model):
 
         super(Profile, self).save(*args, **kwargs)
 
-
+# automatically create a profile after a save signal
+# and use the signal's instance to associate with the 
+# user
 @receiver(post_save, sender=User)
 def create_user_cart(sender, instance, created, **kwargs):
     if created:
