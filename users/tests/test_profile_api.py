@@ -5,6 +5,7 @@ from rest_framework.test import APIRequestFactory, APITestCase, APIClient
 from rest_framework.authtoken.models import Token
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AnonymousUser, User
+import json
 
 
 class ProfileApiTest(APITestCase):
@@ -92,7 +93,7 @@ class ProfileApiTest(APITestCase):
             'academic_qualification_file': None,
             'projects': '',
             'hackathons': [],
-            'news_pref': 'lambda'
+            'news_pref': news.DEFAULT_NEWS
         })
 
     def test_profile_add_bio(self):
@@ -120,5 +121,44 @@ class ProfileApiTest(APITestCase):
         token = Token.objects.get(user=self.user1)
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
         response = self.client.put('/profiles/user1/', data)
-        self.assertEqual(str(response.data[key][0]), value+' is not a valid github profile.')
+        self.assertEqual(
+            str(response.data[key][0]), value+' is not a valid github profile.')
+        self.client.credentials()
+
+    def test_valid_language_schema(self):
+        key = 'languages'
+        value = [{"name": "django", "category": "back_end", "score": 10}, {
+            "name": "react", "category": "front_end", "score": 1}]
+        data = {key: value}
+        token = Token.objects.get(user=self.user1)
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
+        # post list as json
+        response = self.client.put(
+            '/profiles/user1/', json.dumps(data), content_type='application/json')
+        self.assertEqual(response.data['languages'], [{'name': 'django', 'category': 'back_end', 'score': 10}, {
+                         'name': 'react', 'category': 'front_end', 'score': 1}])
+        self.client.credentials()
+
+    def test_wrong_language_schema(self):
+        key = 'languages'
+        # wrong category name
+        value = [{"name": "django", "category": "bback_end", "score": 10}, {
+            "name": "react", "category": "front_end", "score": 1}]
+        data = {key: value}
+        token = Token.objects.get(user=self.user1)
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
+        # post list as json
+        response = self.client.put(
+            '/profiles/user1/', json.dumps(data), content_type='application/json')
+        self.assertEqual(response.data[key][0], str(value)+' failed JSON schema check')
+        self.client.credentials()
+
+    def test_write_to_other_profile(self):
+        key = 'github_url'
+        value = 'https://github.com/profile/'
+        data = {key: value}
+        token = Token.objects.get(user=self.user2)
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
+        response = self.client.put('/profiles/user1/', data)
+        self.assertEqual(response.data['detail'], 'You do not have permission to perform this action.')
         self.client.credentials()
