@@ -116,7 +116,18 @@ class ProfileApiTest(APITestCase):
 
     def test_profile_wrong_github(self):
         key = 'github_url'
-        value = 'https://github.com/profile/wrong'
+        value = 'https://github.com/profile/wrong/'
+        data = {key: value}
+        token = Token.objects.get(user=self.user1)
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
+        response = self.client.put('/profiles/user1/', data)
+        self.assertEqual(
+            str(response.data[key][0]), value+' is not a valid github profile.')
+        self.client.credentials()
+
+    def test_profile_wrong_url_for_github(self):
+        key = 'github_url'
+        value = 'https://example.com/profile/'
         data = {key: value}
         token = Token.objects.get(user=self.user1)
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
