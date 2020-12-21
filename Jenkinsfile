@@ -27,7 +27,6 @@ pipeline {
         }
         stage('Clean up') {
             steps {
-                sh "docker-compose down test_postgres"
                 sh "docker-compose down"
             }
         }
