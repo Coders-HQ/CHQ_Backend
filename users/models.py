@@ -61,19 +61,22 @@ class Profile(models.Model):
         """
         if self.total_self_score() != 100:
             raise ValidationError(
-            _('Total score must be 100 and not %(value)s'),
-            params={'value': self.total_self_score()},
-        )
+                _('Total score must be 100 and not %(value)s'),
+                params={'value': self.total_self_score()},
+            )
 
         super(Profile, self).save(*args, **kwargs)
 
 # automatically create a profile after a save signal
-# and use the signal's instance to associate with the 
+# and use the signal's instance to associate with the
 # user
+
+
 @receiver(post_save, sender=User)
-def create_user_cart(sender, instance, created, **kwargs):
+def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
+
 
 class Hackathon(models.Model):
     date = models.DateField()
