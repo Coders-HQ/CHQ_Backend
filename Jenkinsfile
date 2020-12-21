@@ -4,7 +4,6 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh "docker-compose -p test_postgres up -d db"
                 sh "docker-compose run --rm --name test_backend backend ./wait-for-it.sh db:5432"
                 sh "docker-compose run --rm --name test_backend backend python manage.py makemigrations users"
                 sh "docker-compose run --rm --name test_backend backend python manage.py migrate"
