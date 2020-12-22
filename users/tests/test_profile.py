@@ -155,3 +155,9 @@ class ProfileModelTest(TestCase):
     def test_total_self_score(self):
         profile = Profile.objects.get(id=1)
         self.assertEqual(profile.total_self_score(), 100)
+
+    def test_total_score_100(self):
+        profile = Profile.objects.get(id=1)
+        total_score = profile.back_end_score + profile.front_end_score+profile.database_score+profile.devops_score+profile.mobile_score
+        self.assertEqual(total_score,100)
+        self.assertEqual(profile.total_self_score(),100)
