@@ -22,8 +22,6 @@ pipeline {
                 always {
                     // save report
                     junit "reports/junit.xml"
-                    // clean images
-                    sh "docker system prune"
                 }
             }
         }
@@ -39,6 +37,13 @@ pipeline {
             steps {
                 sh "cp README.md docs"
                 sh "docker-compose up --build -d"
+            }
+        }
+
+        stage('Clean Up'){
+            steps{
+                // clean images
+                sh "docker system prune"
             }
         }
     }
