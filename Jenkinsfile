@@ -24,13 +24,15 @@ pipeline {
                 }
             }
         }
-        stage('Clean up') {
+        stage('Prepare Deploy') {
+            when { branch "main" }
             steps {
                 sh "docker-compose down"
             }
         }
 
         stage('Deploy') {
+            when { branch "main" }
             steps {
                 sh "cp README.md docs"
                 sh "docker-compose up --build -d"
