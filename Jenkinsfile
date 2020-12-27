@@ -20,7 +20,10 @@ pipeline {
             
             post {
                 always {
+                    // save report
                     junit "reports/junit.xml"
+                    // clean images
+                    sh "docker system prune"
                 }
             }
         }
