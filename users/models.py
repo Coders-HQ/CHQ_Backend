@@ -52,6 +52,9 @@ class Profile(models.Model):
     def user__username(self):
         return self.user.username
 
+    def github_username(self):
+        return self.github_url.rsplit('/', 1)[-1]
+
     def total_self_score(self):
         return self.mobile_score+self.devops_score+self.database_score+self.front_end_score+self.back_end_score
 

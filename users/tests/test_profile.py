@@ -161,3 +161,9 @@ class ProfileModelTest(TestCase):
         total_score = profile.back_end_score + profile.front_end_score+profile.database_score+profile.devops_score+profile.mobile_score
         self.assertEqual(total_score,100)
         self.assertEqual(profile.total_self_score(),100)
+
+    def test_get_github_username(self):
+        profile = Profile.objects.get(id=1)
+        profile.github_url = "https://www.github.com/profile"
+        profile.full_clean()
+        self.assertEqual(profile.github_username(), "profile")
