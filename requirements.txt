@@ -11,3 +11,4 @@ django-rest-auth
 django-heroku 
 gunicorn 
 jsonschema
+PyGithub

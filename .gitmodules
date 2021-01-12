@@ -1,0 +1,3 @@
+[submodule "users/CHQ_Scoring"]
+	path = users/CHQ_Scoring
+	url = git@github.com:Coders-HQ/CHQ_Scoring.git
