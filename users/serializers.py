@@ -46,6 +46,8 @@ class ProfileSerializer(serializers.ModelSerializer):
             'projects',
             'hackathons',
             'news_pref',
+            'github_score'
         ]
         extra_kwargs = {'hackathons': {'required': False}}
+        read_only_fields = ['github_score']
 

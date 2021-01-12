@@ -9,6 +9,8 @@ import users.exceptions as CustomExceptions
 from users import news, schema, validators
 from users.utils import external_api
 
+from users.CHQ_Scoring.github_score import CHQScore
+
 
 class Profile(models.Model):
     bio = models.TextField(verbose_name="biography",
@@ -43,6 +45,8 @@ class Profile(models.Model):
     languages = models.JSONField(null=True, blank=True, validators=[
         validators.JSONSchemaValidator(limit_value=schema.LANGUAGE_SCHEMA)])
 
+    github_score = models.IntegerField(null=True, blank=True)
+
     def __str__(self):
         return "%s's profile" % (self.user)
 
@@ -66,6 +70,19 @@ class Profile(models.Model):
             raise ValidationError(
                 _('Total score must be 100 and not %(value)s'),
                 params={'value': self.total_self_score()},
+            )
+
+        if self.github_url is not '' and self.github_score is '':
+            split_url = self.github_url.split('/')
+            if split_url[-1] == '':
+                user_name=split_url[-2]
+            else:
+                user_name=split_url[-1]
+            try:
+                chq_score = CHQScore("4f264e8b402a3344cd63472f6c2ae01fe64a6cea")
+                self.github_score = chq_score.get_score(user_name)
+            except :
+                raise ValidationError(_('couldnt get score')
             )
 
         super(Profile, self).save(*args, **kwargs)
