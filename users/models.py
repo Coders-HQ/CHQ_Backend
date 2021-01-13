@@ -1,18 +1,22 @@
+import users.exceptions as CustomExceptions
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
-
-import users.exceptions as CustomExceptions
-from users import news, schema, validators
-from users.utils import external_api
-
 from users.CHQ_Scoring.github_score import CHQScore
+from users.utils import external_api
+import datetime
+from django.utils import timezone
+import pytz
+from django.conf import settings
+from users import news, schema, validators
 
 
 class Profile(models.Model):
+
+    # main profile items
     bio = models.TextField(verbose_name="biography",
                            blank=True, max_length=200)
     cv = models.FileField(null=True, blank=True, upload_to="cv")
@@ -22,30 +26,33 @@ class Profile(models.Model):
     academic_qualification_file = models.FileField(
         null=True, blank=True, upload_to="academic")
 
+    # github
     # must add http/s to url
     github_url = models.URLField(blank=True, validators=[
                                  validators.validate_github_url])
+    github_score = models.IntegerField(null=True, blank=True)
+    # time when score is updated
+    github_updated = models.DateTimeField(null=True, blank=True)
 
+    # scoring and language
     # must add up to 100
     front_end_score = models.IntegerField(null=False, default=20)
     back_end_score = models.IntegerField(null=False, default=20)
     database_score = models.IntegerField(null=False, default=20)
     devops_score = models.IntegerField(null=False, default=20)
     mobile_score = models.IntegerField(null=False, default=20)
+    # validated using schema
+    languages = models.JSONField(null=True, blank=True, validators=[
+        validators.JSONSchemaValidator(limit_value=schema.LANGUAGE_SCHEMA)])
 
     # connect to user
     user = models.OneToOneField(
         'auth.User', related_name='profile', on_delete=models.CASCADE)
 
+    # news
     # default news if none selected
     news_pref = models.CharField(max_length=100, default=news.DEFAULT_NEWS, validators=[
                                  validators.validate_no_news_source])
-
-    # validated using schema
-    languages = models.JSONField(null=True, blank=True, validators=[
-        validators.JSONSchemaValidator(limit_value=schema.LANGUAGE_SCHEMA)])
-
-    github_score = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return "%s's profile" % (self.user)
@@ -62,28 +69,46 @@ class Profile(models.Model):
     def total_self_score(self):
         return self.mobile_score+self.devops_score+self.database_score+self.front_end_score+self.back_end_score
 
+    def update_github_score(self):
+        if self.github_url == '':
+            raise ValidationError(_('Github url must be a valid url'))
+
+        # get username
+        split_url = self.github_url.split('/')
+        if split_url[-1] == '':
+            user_name = split_url[-2]
+        else:
+            user_name = split_url[-1]
+
+        try:
+            chq_score = CHQScore(settings.GITHUB_TOKEN)
+            self.github_score = chq_score.get_score(user_name)
+            self.github_updated = timezone.now()
+        except:
+            raise ValidationError(_('couldnt get score')
+                                  )
+
     def save(self, *args, **kwargs):
         """
         Fails if score does not have a total of 100 and if news source is not available.
         """
+
         if self.total_self_score() != 100:
             raise ValidationError(
                 _('Total score must be 100 and not %(value)s'),
                 params={'value': self.total_self_score()},
             )
 
-        if self.github_url is not '' and self.github_score is '':
-            split_url = self.github_url.split('/')
-            if split_url[-1] == '':
-                user_name=split_url[-2]
-            else:
-                user_name=split_url[-1]
-            try:
-                chq_score = CHQScore("4f264e8b402a3344cd63472f6c2ae01fe64a6cea")
-                self.github_score = chq_score.get_score(user_name)
-            except :
-                raise ValidationError(_('couldnt get score')
-            )
+        # first time get score
+        if self.github_url != '' and not isinstance(self.github_score, int):
+            self.update_github_score()
+
+        # first time get score
+        if self.github_url != '' and isinstance(self.github_score, int):
+
+            # if more than a day
+            if timezone.now()-datetime.timedelta(hours=24) >= self.github_updated <= timezone.now():
+                self.update_github_score()
 
         super(Profile, self).save(*args, **kwargs)
 
