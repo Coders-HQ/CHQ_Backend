@@ -12,3 +12,4 @@ django-heroku
 gunicorn 
 jsonschema
 PyGithub
+django-environ
