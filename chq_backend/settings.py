@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
-import django_heroku
 import os
 import environ
 
@@ -37,7 +36,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['coders-hq.herokuapp.com', '127.0.0.1', 'coders-hq.tarektaha.com']
+ALLOWED_HOSTS = ['coders-hq.herokuapp.com', '127.0.0.1', '0.0.0.0','coders-hq.tarektaha.com']
 
 # Application definition
 
@@ -62,7 +61,6 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -76,7 +74,6 @@ MIDDLEWARE = [
 ]
 
 
-ALLOWED_HOSTS=['*']
 CORS_ORIGIN_ALLOW_ALL = True
 
 
@@ -175,9 +172,19 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Heroku integration
-django_heroku.settings(locals())
-
 
 # Jenkins integration
 PROJECT_APPS = ['users']
+
+# Email
+# if no email host is set in .env use console
+if env("EMAIL_HOST_USER")== None or env("EMAIL_HOST_USER")=='':
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = env("EMAIL_HOST")
+    EMAIL_USE_TLS = True
+    EMAIL_PORT = 587
+    EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+    EMAIL_HOST_PASSWORD = env("EMAIL_PASSWORD")
+    DEFAULT_FROM_EMAIL = 'default from email'
