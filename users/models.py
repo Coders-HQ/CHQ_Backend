@@ -1,17 +1,20 @@
+import datetime
+
+import pytz
 import users.exceptions as CustomExceptions
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from users.CHQ_Scoring.github_score import CHQScore
 from users.utils import external_api
-import datetime
-from django.utils import timezone
-import pytz
-from django.conf import settings
+
 from users import news, schema, validators
+from users.tasks import update_github_score
 
 
 class Profile(models.Model):
@@ -69,25 +72,6 @@ class Profile(models.Model):
     def total_self_score(self):
         return self.mobile_score+self.devops_score+self.database_score+self.front_end_score+self.back_end_score
 
-    def update_github_score(self):
-        if self.github_url == '':
-            raise ValidationError(_('Github url must be a valid url'))
-
-        # get username
-        split_url = self.github_url.split('/')
-        if split_url[-1] == '':
-            user_name = split_url[-2]
-        else:
-            user_name = split_url[-1]
-
-        try:
-            chq_score = CHQScore(settings.GITHUB_TOKEN)
-            self.github_score = chq_score.get_score(user_name)
-            self.github_updated = timezone.now()
-        except:
-            raise ValidationError(_('couldnt get score')
-                                  )
-
     def save(self, *args, **kwargs):
         """
         Fails if score does not have a total of 100 and if news source is not available.
@@ -101,14 +85,14 @@ class Profile(models.Model):
 
         # first time get score
         if self.github_url != '' and not isinstance(self.github_score, int):
-            self.update_github_score()
+            update_github_score.delay(self.github_url, self.pk)
 
         # first time get score
         if self.github_url != '' and isinstance(self.github_score, int):
 
             # if more than a day
-            if timezone.now()-datetime.timedelta(hours=24) >= self.github_updated <= timezone.now():
-                self.update_github_score()
+            if timezone.now()-datetime.timedelta(seconds=24) >= self.github_updated <= timezone.now():
+                update_github_score.delay(self.github_url, self.pk)
 
         super(Profile, self).save(*args, **kwargs)
 
