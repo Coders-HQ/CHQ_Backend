@@ -6,6 +6,8 @@
 
 This repository holds the Coders-HQ backend. It is made using [Django](https://www.djangoproject.com/) and [Postgres](https://www.postgresql.org/) as an API backend to the Coders-HQ frontend (based on [React](https://reactjs.org/)) which is hosted [in this repo](https://github.com/Coders-HQ/CHQ_Frontend). The main Coders-HQ website is hosted at [codershq.ae](https://codershq.ae).
 
+All information relating to the databse and tokens/secrets are should be in a `.env` file. An example of the file is the `.env.example` copy and edit the conttents to suite your environment and save it as `.env` in the root directory.
+
 Table of Contents
 =================
 
@@ -14,7 +16,6 @@ Table of Contents
    * [Table of Contents](#table-of-contents)
       * [Installation](#installation)
          * [Pre requisites](#pre-requisites)
-         * [Building locally](#building-locally)
          * [Building on Docker](#building-on-docker)
       * [API](#api)
       * [Architecture](#architecture)
@@ -28,23 +29,16 @@ Table of Contents
 
 ### Pre requisites
 
-1.  python 3
-1.  Pip
-2.  (Optional) [docker](https://docs.docker.com/get-docker/)
-2.  (Optional) httpie
-
-### Building locally
-
-1.  run `pip install -r requirements.txt` in root dir 
-1.  run `python manage.py migrate`
-1.  run `python manage.py createsuperuser`
-1.  run `python manage.py runserver 0.0.0.0:33325`
-1.  On a web browser open [localhost:33325](http://localhost33325)
+1.  [docker](https://docs.docker.com/get-docker/)
+2.  docker-compose
+3.  (Optional) httpie
 
 ### Building on Docker
 
-3.  Run `docker-compose up` in __root dir__ and it will create the django and postgres apps, it will also run the web app
-1.  On a web browser open [localhost:33325](http://localhost33325)
+1. Copy `.env.example` to `.env` and edit with your github token, django secret, etc.
+2. Run `docker-compose up backend` 
+3. On a web browser open [localhost:33325](http://localhost33325)
+
 
 ## API
 
@@ -76,12 +70,4 @@ __Currently the docker-compose.yml is located inside this repository but will ev
 
 ## Database
 
-Django should be connected to postgres (postgres can be installed locally or using docker) but there is an option to use sqlite for development. __Sqlite should not be used for release.__ To switch between sqlite or postgres use the [migrate function](https://docs.djangoproject.com/en/3.1/topics/db/multi-db/#synchronizing-your-databases) like so:
-
-```
-$ ./manage.py migrate                           // for sqlite
-$ ./manage.py migrate --database=postgres       // for postgres (must have an instance of postgres running)
-```
-
-Docker makes it easy to set up postgres. The docker-compose.yaml file creates and connects the two containers (django+postgres) together, you can also create postgres by itself and connect to django which you build locally.
-
+Postgres is pulled when using the `docker-compose` command and the databse name/user/password are all grabbed from the `.env` file. The data is stored at `/var/lib/codershq/postgres/`. 
