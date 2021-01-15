@@ -12,3 +12,5 @@ gunicorn
 jsonschema
 PyGithub
 django-environ
+celery
+redis

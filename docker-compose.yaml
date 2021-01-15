@@ -1,6 +1,7 @@
 version: "3.8"
    
 services:
+  
   db:
     image: postgres
     environment:
@@ -9,6 +10,7 @@ services:
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
     volumes: 
       - /var/lib/codershq/postgres/:/var/lib/postgresql/data/
+  
   backend:
     build: .
     container_name: backend_django
@@ -25,6 +27,12 @@ services:
       - "33325:33325"
     depends_on:
       - db
+      - redis
+
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
 
   docs:
     container_name: mkdocs
