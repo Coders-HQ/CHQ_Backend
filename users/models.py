@@ -30,7 +30,7 @@ class Profile(models.Model):
     # must add http/s to url
     github_url = models.URLField(blank=True, validators=[
                                  validators.validate_github_url])
-    github_score = models.IntegerField(null=True, blank=True)
+    github_score = models.IntegerField(null=False, default=0)
     # time when score is updated
     github_updated = models.DateTimeField(null=True, blank=True)
 
@@ -80,15 +80,16 @@ class Profile(models.Model):
                 params={'value': self.total_self_score()},
             )
 
-        # first time get score
-        if self.github_url != '' and not isinstance(self.github_score, int):
-            update_github_score.delay(self.github_url, self.pk)
+        if self.github_url != '' :
 
-        # first time get score
-        if self.github_url != '' and isinstance(self.github_score, int):
-
-            # if more than a day
-            if timezone.now()-timezone.timedelta(seconds=24) >= self.github_updated <= timezone.now():
+            if self.github_updated != None:
+                # only get score when enough time has passed
+                if timezone.now()-timezone.timedelta(seconds=24) >= self.github_updated <= timezone.now():
+                    self.github_score = -1
+                    update_github_score.delay(self.github_url, self.pk)
+            else:
+                # first time get score
+                self.github_score = -1
                 update_github_score.delay(self.github_url, self.pk)
 
         super(Profile, self).save(*args, **kwargs)

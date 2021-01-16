@@ -40,7 +40,9 @@ def update_github_score(github_url, id):
         profile.github_score = chq_score.get_score(user_name)
         profile.github_updated = timezone.now()
     except:
-        raise ValidationError(_('couldnt get score')
-                                )
+        # cannot get api
+        profile.github_score=0
+        # raise ValidationError(_('couldnt get score')
+        #                         )
     profile.full_clean()
     profile.save()
