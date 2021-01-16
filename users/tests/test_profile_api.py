@@ -75,26 +75,25 @@ class ProfileApiTest(APITestCase):
         # Create an instance of a GET request.
         response = self.client.get('/profiles/user1/')
 
-        self.assertEqual(response.data, {
-            'github_url': '',
-            'bio': '',
-            'username': 'user1',
-            'first_name': '',
-            'last_name': '',
-            'email': 'user1@email.com',
-            'mobile_score': 20,
-            'devops_score': 20,
-            'front_end_score': 20,
-            'back_end_score': 20,
-            'database_score': 20,
-            'languages': None,
-            'cv': None,
-            'academic_qualification': '',
-            'academic_qualification_file': None,
-            'projects': '',
-            'hackathons': [],
-            'news_pref': news.DEFAULT_NEWS
-        })
+        self.assertEqual(response.data['github_url'], '')
+        self.assertEqual(response.data['bio'], '')
+        self.assertEqual(response.data['username'], 'user1')
+        self.assertEqual(response.data['first_name'], '')
+        self.assertEqual(response.data['last_name'], '')
+        self.assertEqual(response.data['email'], 'user1@email.com')
+        self.assertEqual(response.data['mobile_score'], 20)
+        self.assertEqual(response.data['devops_score'], 20)
+        self.assertEqual(response.data['front_end_score'], 20)
+        self.assertEqual(response.data['back_end_score'], 20)
+        self.assertEqual(response.data['database_score'], 20)
+        self.assertEqual(response.data['languages'], None)
+        self.assertEqual(response.data['cv'], None)
+        self.assertEqual(response.data['academic_qualification'], '')
+        self.assertEqual(response.data['academic_qualification_file'], None)
+        self.assertEqual(response.data['projects'], '')
+        self.assertEqual(response.data['hackathons'], [])
+        self.assertEqual(response.data['news_pref'], news.DEFAULT_NEWS)
+        
 
     def test_profile_add_bio(self):
         data = {'bio': 'This is a test bio'}
