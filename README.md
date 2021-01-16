@@ -47,6 +47,7 @@ The main apps are:
 | Jenkins                   | Unit tests and server build              |
 | Celery                    | Async events                             |
 | Redis                     | Message broker between celery and Django |
+
 __Currently the docker-compose.yml is located inside this repository but will eventually be pulled out top integrate the frontend with the backend.__
 
 ## Database
