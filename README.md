@@ -8,23 +8,6 @@ This repository holds the Coders-HQ backend. It is made using [Django](https://w
 
 All information relating to the databse and tokens/secrets are should be in a `.env` file. An example of the file is the `.env.example` copy and edit the conttents to suite your environment and save it as `.env` in the root directory.
 
-Table of Contents
-=================
-
-<!--ts-->
-   * [Coders HQ Backend](#coders-hq-backend)
-   * [Table of Contents](#table-of-contents)
-      * [Installation](#installation)
-         * [Pre requisites](#pre-requisites)
-         * [Building on Docker](#building-on-docker)
-      * [API](#api)
-      * [Architecture](#architecture)
-      * [Database](#database)
-
-<!-- Added by: runner, at: Fri Dec 18 18:29:20 UTC 2020 -->
-
-<!--te-->
-
 ## Installation
 
 ### Pre requisites
