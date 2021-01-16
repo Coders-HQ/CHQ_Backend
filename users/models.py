@@ -1,6 +1,4 @@
-import datetime
 
-import pytz
 import users.exceptions as CustomExceptions
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -90,7 +88,7 @@ class Profile(models.Model):
         if self.github_url != '' and isinstance(self.github_score, int):
 
             # if more than a day
-            if timezone.now()-datetime.timedelta(seconds=24) >= self.github_updated <= timezone.now():
+            if timezone.now()-timezone.timedelta(seconds=24) >= self.github_updated <= timezone.now():
                 update_github_score.delay(self.github_url, self.pk)
 
         super(Profile, self).save(*args, **kwargs)

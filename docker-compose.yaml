@@ -4,14 +4,18 @@ services:
   
   db:
     image: postgres
+    container_name: backend_db
     environment:
       - POSTGRES_DB=${DATABASE_NAME}
       - POSTGRES_USER=${DATABASE_USER}
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
     volumes: 
       - /var/lib/codershq/postgres/:/var/lib/postgresql/data/
+
+  redis:
+    image: "redis:alpine"
   
-  backend:
+  web:
     build: .
     container_name: backend_django
     environment:
@@ -28,14 +32,20 @@ services:
     depends_on:
       - db
       - redis
+      - celery
 
-  redis:
-    image: "redis:alpine"
-    ports:
-      - "6379:6379"
+  celery:
+    build: .
+    container_name: backend_celery
+    command: celery -A chq_backend worker -l INFO
+    volumes:
+      - ".:/app/backend"
+    depends_on:
+      - db
+      - redis
 
   docs:
-    container_name: mkdocs
+    container_name: backend_mkdocs
     build: docs
     volumes: 
       - .:/docs

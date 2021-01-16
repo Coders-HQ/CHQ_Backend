@@ -1,5 +1,5 @@
 from users.CHQ_Scoring.github_score import CHQScore
-from celery.decorators import task
+from celery import shared_task
 from celery.utils.log import get_task_logger
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
@@ -22,7 +22,7 @@ def _model(Profile):
 
 logger = get_task_logger(__name__)
 
-@task(name="update_github_score")
+@shared_task
 def update_github_score(github_url, id):
     profile = _model('Profile').objects.get(pk=id)
     profile.github_url = github_url
