@@ -10,6 +10,8 @@ All information relating to the databse and tokens/secrets are should be in a `.
 
 ## Installation
 
+Docker and docker-compose are used to build and connect the subset of apps that are required to run the backend.
+
 ### Pre requisites
 
 1.  [docker](https://docs.docker.com/get-docker/)
@@ -29,25 +31,21 @@ All information related to the API, and how to use it, can be found [here](https
 
 ## Architecture
 
-The front-end will be located [in its own repository](https://github.com/Coders-HQ/CHQ_Frontend) which can connect to django's REST framework. The REST framework makes it easy to integrate any frontend to django's API which makes it possible to work on the front and backend separately. The final architecture should look something like this.
+The front-end will be located [in its own repository](https://github.com/Coders-HQ/CHQ_Frontend) which can connect to django's REST framework. The REST framework makes it easy to integrate any frontend to django's API which makes it possible to work on the front and backend separately. 
 
-```
-├──chq_frontend
-| ├──public/
-| ├──src/
-| ├──Dockerfile          
-| ├──package.json
-| └──package-lock.json
-├──CHQ_Backend
-| ├──chq_backend/
-| ├──users/             // main django app
-| ├──Dockerfile         
-| ├──entrypoint.sh      // bash entrypoint for django to run commands before running the server
-| ├──manage.py          
-| ├──requirements.txt
-| └──settings.ini
-└──docker-compose.yaml  // for running multi-conatiner application
-```
+The final architecture combines a subset of apps together to run all the different functionalities that's needed for the backend.
+
+The main apps are:
+
+| Django                    | Main backend                             |
+|-------------              |------------------------------------------|
+| [CHQ_Scoring](https://github.com/Coders-HQ/CHQ_Scoring)               | Scoring mechanism for CHQ Backend        |
+| MKDocs                    | Documentation tool                       |
+| Postgres                  | Database server                          |
+| Jenkins                   | Unit tests and server build              |
+| Celery                    | Async events                             |
+| Redis                     | Message broker between celery and Django |
+
 
 __Currently the docker-compose.yml is located inside this repository but will eventually be pulled out top integrate the frontend with the backend.__
 
