@@ -11,7 +11,6 @@ from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from users.CHQ_Scoring.github_score import CHQScore
-from users.utils import external_api
 
 from users import news, schema, validators
 from users.tasks import update_github_score
