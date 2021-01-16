@@ -23,18 +23,9 @@ def _model(Profile):
 logger = get_task_logger(__name__)
 
 @shared_task
-def update_github_score(github_url, id, old_score=0):
+def update_github_score(user_name, id, old_score=0):
     profile = _model('Profile').objects.get(pk=id)
-    profile.github_url = github_url
     
-
-    # get username
-    split_url = github_url.split('/')
-    if split_url[-1] == '':
-        user_name = split_url[-2]
-    else:
-        user_name = split_url[-1]
-
     try:
         logger.info("updating github score")
         chq_score = CHQScore(settings.GITHUB_TOKEN)

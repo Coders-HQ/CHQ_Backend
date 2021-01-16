@@ -9,6 +9,7 @@ from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from users.CHQ_Scoring.github_score import CHQScore
+from users.utils import get_github_username
 
 from users import news, schema, validators
 from users.tasks import update_github_score
@@ -29,7 +30,7 @@ class Profile(models.Model):
     # github
     # must add http/s to url
     github_url = models.URLField(blank=True, validators=[
-                                 validators.validate_github_url])
+                                 validators.validate_github_url,validators.validate_github_user])
     github_score = models.IntegerField(null=False, default=0)
     # time when score is updated
     github_updated = models.DateTimeField(null=True, blank=True)
@@ -64,7 +65,8 @@ class Profile(models.Model):
         return self.user.username
 
     def github_username(self):
-        return self.github_url.rsplit('/', 1)[-1]
+        # get username
+        return get_github_username(self.github_url)
 
     def total_self_score(self):
         return self.mobile_score+self.devops_score+self.database_score+self.front_end_score+self.back_end_score
@@ -80,19 +82,20 @@ class Profile(models.Model):
                 params={'value': self.total_self_score()},
             )
 
-        if self.github_url != '' :
-
+        if self.github_url != '':
+            
             if self.github_updated != None:
                 # only get score when enough time has passed
                 if timezone.now()-timezone.timedelta(seconds=24) >= self.github_updated <= timezone.now():
                     # save current score and use it if api call fails
                     old_score = self.github_score
                     self.github_score = -1
-                    update_github_score.delay(self.github_url, self.pk, old_score)
+                    update_github_score.delay(
+                        self.github_username(), self.pk, old_score)
             else:
                 # first time get score
                 self.github_score = -1
-                update_github_score.delay(self.github_url, self.pk)
+                update_github_score.delay(self.github_username(), self.pk)
 
         super(Profile, self).save(*args, **kwargs)
 
