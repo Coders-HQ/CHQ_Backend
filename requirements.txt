@@ -14,3 +14,4 @@ PyGithub
 django-environ
 celery
 redis
+django-celery-email

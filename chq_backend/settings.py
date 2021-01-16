@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'rest_auth',
     'django.contrib.sites',
     'allauth',
+    'djcelery_email',
     'corsheaders',
     'allauth.account',
     'rest_auth.registration',
@@ -181,7 +182,8 @@ PROJECT_APPS = ['users']
 if env("EMAIL_HOST_USER")== None or env("EMAIL_HOST_USER")=='':
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    CELERY_EMAIL_BACKEND  = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
     EMAIL_HOST = env("EMAIL_HOST")
     EMAIL_USE_TLS = True
     EMAIL_PORT = 587
@@ -196,4 +198,4 @@ CELERY_RESULT_BACKEND = env("REDIS_URL")
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'Africa/Nairobi'
+CELERY_TIMEZONE = 'Asia/Dubai'
