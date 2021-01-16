@@ -31,6 +31,8 @@ All information related to the API, and how to use it, can be found [here](https
 
 ## Architecture
 
+![ibackend mapmage](docs/backend_map.png)
+
 The front-end will be located [in its own repository](https://github.com/Coders-HQ/CHQ_Frontend) which can connect to django's REST framework. The REST framework makes it easy to integrate any frontend to django's API which makes it possible to work on the front and backend separately. 
 
 The final architecture combines a subset of apps together to run all the different functionalities that's needed for the backend.
@@ -45,8 +47,6 @@ The main apps are:
 | Jenkins                   | Unit tests and server build              |
 | Celery                    | Async events                             |
 | Redis                     | Message broker between celery and Django |
-
-
 __Currently the docker-compose.yml is located inside this repository but will eventually be pulled out top integrate the frontend with the backend.__
 
 ## Database
