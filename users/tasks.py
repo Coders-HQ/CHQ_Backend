@@ -23,9 +23,10 @@ def _model(Profile):
 logger = get_task_logger(__name__)
 
 @shared_task
-def update_github_score(github_url, id):
+def update_github_score(github_url, id, old_score=0):
     profile = _model('Profile').objects.get(pk=id)
     profile.github_url = github_url
+    
 
     # get username
     split_url = github_url.split('/')
@@ -40,9 +41,7 @@ def update_github_score(github_url, id):
         profile.github_score = chq_score.get_score(user_name)
         profile.github_updated = timezone.now()
     except:
-        # cannot get api
-        profile.github_score=0
-        # raise ValidationError(_('couldnt get score')
-        #                         )
+        # use old score (or 0) if api call fails
+        profile.github_score=old_score
     profile.full_clean()
     profile.save()

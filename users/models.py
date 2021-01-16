@@ -85,8 +85,10 @@ class Profile(models.Model):
             if self.github_updated != None:
                 # only get score when enough time has passed
                 if timezone.now()-timezone.timedelta(seconds=24) >= self.github_updated <= timezone.now():
+                    # save current score and use it if api call fails
+                    old_score = self.github_score
                     self.github_score = -1
-                    update_github_score.delay(self.github_url, self.pk)
+                    update_github_score.delay(self.github_url, self.pk, old_score)
             else:
                 # first time get score
                 self.github_score = -1
