@@ -1,6 +1,4 @@
 
-import users.exceptions as CustomExceptions
-from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -8,11 +6,11 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from users.CHQ_Scoring.github_score import CHQScore
-from users.utils import get_github_username
 
+from users.exceptions import ScoreNot100
 from users import news, schema, validators
 from users.tasks import update_github_score
+from users.utils import get_github_username
 
 
 class Profile(models.Model):
@@ -30,7 +28,8 @@ class Profile(models.Model):
     # github
     # must add http/s to url
     github_url = models.URLField(blank=True, validators=[
-                                 validators.validate_github_url,validators.validate_github_user])
+                                 validators.validate_github_url,
+                                 validators.validate_github_user])
     github_score = models.IntegerField(null=False, default=0)
     # time when score is updated
     github_updated = models.DateTimeField(null=True, blank=True)
@@ -76,14 +75,12 @@ class Profile(models.Model):
         Fails if score does not have a total of 100 and if news source is not available.
         """
 
+        # raise error if score doesnt add to 100
         if self.total_self_score() != 100:
-            raise ValidationError(
-                _('Total score must be 100 and not %(value)s'),
-                params={'value': self.total_self_score()},
-            )
+            raise ScoreNot100()
 
         if self.github_url != '':
-            
+
             if self.github_updated != None:
                 # only get score when enough time has passed
                 if timezone.now()-timezone.timedelta(seconds=24) >= self.github_updated <= timezone.now():
@@ -99,17 +96,19 @@ class Profile(models.Model):
 
         super(Profile, self).save(*args, **kwargs)
 
-# automatically create a profile after a save signal
-# and use the signal's instance to associate with the
-# user
-
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
+    """
+    automatically create a profile after a save signal
+    and use the signal's instance to associate with the
+    user
+    """
+
     if created:
         Profile.objects.create(user=instance)
 
-
+# TODO: add more fields to hackathon
 class Hackathon(models.Model):
     date = models.DateField()
     location = models.CharField(max_length=30)
