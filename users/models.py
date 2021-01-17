@@ -14,6 +14,9 @@ from users.utils import get_github_username
 
 
 class Profile(models.Model):
+    """
+    Main user profile
+    """
 
     # main profile items
     bio = models.TextField(verbose_name="biography",
@@ -57,17 +60,25 @@ class Profile(models.Model):
     def __str__(self):
         return "%s's profile" % (self.user)
 
-    # this property allows to search for the profile's user's username
-    # in the lookup_field
     @property
     def user__username(self):
+        """
+        This property allows to search for the profile's user's username
+        in the lookup_field
+        """
         return self.user.username
 
+    @property
     def github_username(self):
-        # get username
+        """
+        github username as a profile's property
+        """
         return get_github_username(self.github_url)
 
     def total_self_score(self):
+        """
+        add total score together
+        """
         return self.mobile_score+self.devops_score+self.database_score+self.front_end_score+self.back_end_score
 
     def save(self, *args, **kwargs):
@@ -79,20 +90,23 @@ class Profile(models.Model):
         if self.total_self_score() != 100:
             raise ScoreNot100()
 
+        # if profile has a github_url
         if self.github_url != '':
-
+            # if profile score was updated
             if self.github_updated != None:
                 # only get score when enough time has passed
                 if timezone.now()-timezone.timedelta(seconds=24) >= self.github_updated <= timezone.now():
                     # save current score and use it if api call fails
                     old_score = self.github_score
+                    # set github score to -1 until value is set by celery
                     self.github_score = -1
+                    # call celery task
                     update_github_score.delay(
-                        self.github_username(), self.pk, old_score)
+                        self.github_username, self.pk, old_score)
             else:
                 # first time get score
                 self.github_score = -1
-                update_github_score.delay(self.github_username(), self.pk)
+                update_github_score.delay(self.github_username, self.pk)
 
         super(Profile, self).save(*args, **kwargs)
 
@@ -108,8 +122,9 @@ def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
 
-# TODO: add more fields to hackathon
+
 class Hackathon(models.Model):
+    # TODO: add more fields to hackathon
     date = models.DateField()
     location = models.CharField(max_length=30)
     members = models.ManyToManyField(
