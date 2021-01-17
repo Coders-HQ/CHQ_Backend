@@ -2,6 +2,7 @@
 .vscode
 Pipfile
 Pipfile.lock
+venv
 
 # python build
 __pycache__
