@@ -1,3 +1,7 @@
+"""
+Additional utility functions that can be used in multiple locations
+"""
+
 def get_github_username(github_url):
     split_url = github_url.split('/')
     if split_url[-1] == '':

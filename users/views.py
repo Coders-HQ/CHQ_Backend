@@ -15,6 +15,11 @@ from users.serializers import HackathonSerializer, ProfileSerializer
 
 
 class ProfileDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+    ProfileDetail shows user profile and requires authentication
+    if a post request 
+    """
+
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     lookup_field = 'user__username'
@@ -24,6 +29,10 @@ class ProfileDetail(generics.RetrieveUpdateDestroyAPIView):
 
 @api_view(['GET'])
 def api_root(request, format=None):
+    """
+    api_root displays api in an html webpage
+    """
+
     return Response({
         'profiles': reverse('profile-list', request=request, format=format)
     })
@@ -32,6 +41,7 @@ def api_root(request, format=None):
 @api_view(['GET'])
 def index(request):
     """default root directory will show news as json"""
+
     data = news.show_news(news.DEFAULT_NEWS)
     return Response(data=data)
 
@@ -40,10 +50,11 @@ def index(request):
 def profile_news(request, username):
     """get current user's prefered news source as json"""
 
+    # get user's profile
     user = get_object_or_404(User.objects.all(), username=username)
-
     profile = Profile.objects.get(user=user)
-
+    
+    # get news as json
     data = news.show_news(profile.news_pref)
     return Response(data=data)
 

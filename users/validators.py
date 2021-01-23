@@ -18,6 +18,7 @@ from users import news
 
 class JSONSchemaValidator(BaseValidator):
     """validate json schemas against templates"""
+
     def compare(self, input, schema):
         try:
             jsonschema.validate(input, schema)
@@ -35,6 +36,7 @@ def validate_no_news_source(value):
             params={'value': value},
         )
 
+
 def validate_github_url(value):
     """validate github profile"""
 
@@ -45,9 +47,12 @@ def validate_github_url(value):
             params={'value': value},
         )
 
+
 def validate_github_user(value):
+    """make sure github user is an actual user, consumes one api call"""
+
     user_name = get_github_username(value)
     chq_score = CHQScore(settings.GITHUB_TOKEN)
     if chq_score.check_user_exists(user_name) == False:
         raise ValidationError(_('github username %(value)s doesnt exist'),
-                                params={'value': user_name},)
+                              params={'value': user_name},)

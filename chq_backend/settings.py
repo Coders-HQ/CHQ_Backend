@@ -22,10 +22,10 @@ env = environ.Env(
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-environ.Env.read_env(env_file=os.path.join(BASE_DIR , '.env'))
+environ.Env.read_env(env_file=os.path.join(BASE_DIR, '.env'))
 
 # github token from .env
-GITHUB_TOKEN=env('GITHUB_TOKEN')
+GITHUB_TOKEN = env('GITHUB_TOKEN')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -36,7 +36,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0','codershq.ae']
+ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0', 'codershq.ae']
 
 # Application definition
 
@@ -86,7 +86,7 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.AnonRateThrottle',
         'rest_framework.throttling.UserRateThrottle'
     ],
-    'DEFAULT_THROTTLE_RATES': {
+    'DEFAULT_THROTTLE_RATES': {         # throttle
         'anon': '80/minute',
         'user': '80/minute'
     }
@@ -116,7 +116,7 @@ WSGI_APPLICATION = 'chq_backend.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
+# database values are taken from the .env file
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -128,8 +128,6 @@ DATABASES = {
     }
 
 }
-
-
 
 
 # Password validation
@@ -179,10 +177,10 @@ PROJECT_APPS = ['users']
 
 # Email
 # if no email host is set in .env use console
-if env("EMAIL_HOST_USER")== None or env("EMAIL_HOST_USER")=='':
+if env("EMAIL_HOST_USER") == None or env("EMAIL_HOST_USER") == '':
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
-    CELERY_EMAIL_BACKEND  = 'django.core.mail.backends.smtp.EmailBackend'
+    CELERY_EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
     EMAIL_HOST = env("EMAIL_HOST")
     EMAIL_USE_TLS = True
@@ -192,7 +190,7 @@ else:
     DEFAULT_FROM_EMAIL = 'default from email'
 
 
-# Celery 
+# Celery
 BROKER_URL = env("REDIS_URL")
 CELERY_RESULT_BACKEND = env("REDIS_URL")
 CELERY_ACCEPT_CONTENT = ['application/json']
