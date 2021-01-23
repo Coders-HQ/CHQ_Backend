@@ -1,15 +1,21 @@
 version: "3.8"
-   
 services:
+  
   db:
     image: postgres
+    container_name: backend_db
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
     volumes: 
-      - postgres_data:/var/lib/postgresql/data/
-  backend:
+      - /var/lib/codershq/postgres/:/var/lib/postgresql/data/
+
+  redis:
+    container_name: backend_redis
+    image: "redis:alpine"
+  
+  web:
     build: .
     container_name: backend_django
     environment:
@@ -17,7 +23,7 @@ services:
     command: >
       sh -c "./wait-for-it.sh db:5432 &&
              python manage.py makemigrations users &&
-             python manage.py migrate --database=postgres &&
+             python manage.py migrate &&
              python manage.py runserver 0.0.0.0:33325"
     volumes: 
       - ".:/app/backend"
@@ -25,14 +31,24 @@ services:
       - "33325:33325"
     depends_on:
       - db
+      - redis
+      - celery
+
+  celery:
+    build: .
+    container_name: backend_celery
+    command: celery -A chq_backend worker -l INFO
+    volumes:
+      - ".:/app/backend"
+    depends_on:
+      - db
+      - redis
 
   docs:
-    container_name: mkdocs
+    container_name: backend_mkdocs
     build: docs
     volumes: 
       - .:/docs
     ports:
       - "33324:8000"
   
-volumes: 
-  postgres_data:

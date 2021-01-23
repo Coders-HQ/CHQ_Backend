@@ -11,23 +11,32 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
-import django_heroku
 import os
+import environ
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+environ.Env.read_env(env_file=os.path.join(BASE_DIR , '.env'))
 
+# github token from .env
+GITHUB_TOKEN=env('GITHUB_TOKEN')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'mebi9$1mn#ygkt3++@6co6s4ha64r)g2z4h8f+mdwhlkg6#4ef'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['coders-hq.herokuapp.com', '127.0.0.1', 'coders-hq.tarektaha.com']
+ALLOWED_HOSTS = ['coders-hq.herokuapp.com', '127.0.0.1', '0.0.0.0','coders-hq.tarektaha.com']
 
 # Application definition
 
@@ -42,6 +51,7 @@ INSTALLED_APPS = [
     'rest_auth',
     'django.contrib.sites',
     'allauth',
+    'djcelery_email',
     'corsheaders',
     'allauth.account',
     'rest_auth.registration',
@@ -52,7 +62,6 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -66,7 +75,6 @@ MIDDLEWARE = [
 ]
 
 
-ALLOWED_HOSTS=['*']
 CORS_ORIGIN_ALLOW_ALL = True
 
 
@@ -111,21 +119,17 @@ WSGI_APPLICATION = 'chq_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    },
-    'postgres': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': "db",
-        'PORT': 5432,
+        'NAME': env('DATABASE_NAME'),
+        'USER': env('DATABASE_USER'),
+        'PASSWORD': env('DATABASE_PASSWORD'),
+        'HOST': env('DATABASE_HOST'),
+        'PORT': env('DATABASE_PORT'),
     }
+
 }
 
-default_database = os.environ.get('DJANGO_DATABASE', 'default')
-DATABASES['default'] = DATABASES[default_database]
+
 
 
 # Password validation
@@ -169,9 +173,29 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Heroku integration
-django_heroku.settings(locals())
-
 
 # Jenkins integration
 PROJECT_APPS = ['users']
+
+# Email
+# if no email host is set in .env use console
+if env("EMAIL_HOST_USER")== None or env("EMAIL_HOST_USER")=='':
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    CELERY_EMAIL_BACKEND  = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
+    EMAIL_HOST = env("EMAIL_HOST")
+    EMAIL_USE_TLS = True
+    EMAIL_PORT = 587
+    EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+    EMAIL_HOST_PASSWORD = env("EMAIL_PASSWORD")
+    DEFAULT_FROM_EMAIL = 'default from email'
+
+
+# Celery 
+BROKER_URL = env("REDIS_URL")
+CELERY_RESULT_BACKEND = env("REDIS_URL")
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Dubai'

@@ -25,26 +25,26 @@ pipeline {
                 }
             }
         }
-        stage('Prepare Deploy') {
-            when { branch "main" }
-            steps {
-                sh "docker-compose down"
-            }
-        }
+        // stage('Prepare Deploy') {
+        //     when { branch "main" }
+        //     steps {
+        //         sh "docker-compose down"
+        //     }
+        // }
 
-        stage('Deploy') {
-            when { branch "main" }
-            steps {
-                sh "cp README.md docs"
-                sh "docker-compose up --build -d"
-            }
-        }
+        // stage('Deploy') {
+        //     when { branch "main" }
+        //     steps {
+        //         sh "cp README.md docs"
+        //         sh "docker-compose up --build -d"
+        //     }
+        // }
 
-        stage('Clean Up'){
-            steps{
-                // clean images
-                sh "docker system prune -f"
-            }
-        }
+        // stage('Clean Up'){
+        //     steps{
+        //         // clean images
+        //         sh "docker system prune -f"
+        //     }
+        // }
     }
 }

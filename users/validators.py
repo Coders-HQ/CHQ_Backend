@@ -9,6 +9,9 @@ import jsonschema
 from django.core.exceptions import ValidationError
 from django.core.validators import BaseValidator
 from django.utils.translation import gettext_lazy as _
+from users.CHQ_Scoring.github_score import CHQScore
+from django.conf import settings
+from users.utils import get_github_username
 
 from users import news
 
@@ -41,3 +44,10 @@ def validate_github_url(value):
             _('%(value)s is not a valid github profile.'),
             params={'value': value},
         )
+
+def validate_github_user(value):
+    user_name = get_github_username(value)
+    chq_score = CHQScore(settings.GITHUB_TOKEN)
+    if chq_score.check_user_exists(user_name) == False:
+        raise ValidationError(_('github username %(value)s doesnt exist'),
+                                params={'value': user_name},)

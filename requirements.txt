@@ -8,7 +8,10 @@ requests
 feedparser 
 django-jenkins 
 django-rest-auth 
-django-heroku 
 gunicorn 
 jsonschema
 PyGithub
+django-environ
+celery
+redis
+django-celery-email

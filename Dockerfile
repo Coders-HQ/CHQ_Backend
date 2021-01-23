@@ -16,5 +16,5 @@ RUN pip install -r requirements.txt
 # copy everything in backend root into docker image
 COPY . ./
 
-RUN python manage.py makemigrations users
-RUN python manage.py migrate 
+# RUN python manage.py makemigrations users
+# RUN python manage.py migrate 
