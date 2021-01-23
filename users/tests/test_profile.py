@@ -4,7 +4,7 @@ from django.test import TestCase
 from users import exceptions, news
 from users.models import Profile
 from rest_framework.test import APIRequestFactory
-
+from users.exceptions import ScoreNot100
 
 class ProfileModelTest(TestCase):
 
@@ -63,7 +63,7 @@ class ProfileModelTest(TestCase):
         profile.mobile_score = 20
         profile.database_score = 20
 
-        self.assertRaises(ValidationError, profile.save)
+        self.assertRaises(ScoreNot100, profile.save)
 
     def test_wrong_github_url(self):
         user = User.objects.get(id=1)
@@ -164,6 +164,6 @@ class ProfileModelTest(TestCase):
 
     def test_get_github_username(self):
         profile = Profile.objects.get(id=1)
-        profile.github_url = "https://www.github.com/profile"
+        profile.github_url = "https://www.github.com/ralsuwaidi"
         profile.full_clean()
-        self.assertEqual(profile.github_username(), "profile")
+        self.assertEqual(profile.github_username, "ralsuwaidi")

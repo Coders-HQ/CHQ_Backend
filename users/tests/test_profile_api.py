@@ -105,7 +105,7 @@ class ProfileApiTest(APITestCase):
 
     def test_profile_correct_github(self):
         key = 'github_url'
-        value = 'https://github.com/profile/'
+        value = 'https://github.com/ralsuwaidi/'
         data = {key: value}
         token = Token.objects.get(user=self.user1)
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
