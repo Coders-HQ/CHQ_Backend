@@ -14,7 +14,7 @@ pipeline {
                 // create web
                 sh "docker-compose run --no-deps --name test_web -d web" 
                 // make sure connection is made
-                sh "docker-compose run --rm --no-deps --name test_backend web ./wait-for-it.sh db:5432"
+                sh 'sleep 10'
                 // migration data to postgres
                 sh "docker-compose run --rm --no-deps --name test_backend web python manage.py makemigrations users"
                 sh "docker-compose run --rm --no-deps --name test_backend web python manage.py migrate"
