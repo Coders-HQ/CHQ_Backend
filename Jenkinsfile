@@ -5,17 +5,17 @@ pipeline {
         stage('Build') {
             steps {
                 sh "cp ../.env ."
-                sh "docker-compose run --rm --name test_backend backend ./wait-for-it.sh db:5432"
-                sh "docker-compose run --rm --name test_backend backend python manage.py makemigrations users"
-                sh "docker-compose run --rm --name test_backend backend python manage.py migrate"
+                sh "docker-compose run --rm --name test_backend web ./wait-for-it.sh db:5432"
+                sh "docker-compose run --rm --name test_backend web python manage.py makemigrations users"
+                sh "docker-compose run --rm --name test_backend web python manage.py migrate"
             }
         }
         stage('Test') {
             steps {
                 // run test
-                sh "docker-compose run --rm --name test_backend backend python manage.py test"
+                sh "docker-compose run --rm --name test_backend web python manage.py test"
                 // create report
-                sh "docker-compose run --rm --name test_backend backend python manage.py jenkins"
+                sh "docker-compose run --rm --name test_backend web python manage.py jenkins"
                 
             }
             
