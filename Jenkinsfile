@@ -16,16 +16,16 @@ pipeline {
                 // make sure connection is made
                 sh 'sleep 10'
                 // migration data to postgres
-                sh "docker-compose run --rm --no-deps --name test_backend web python manage.py makemigrations users"
-                sh "docker-compose run --rm --no-deps --name test_backend web python manage.py migrate"
+                sh "docker-compose run --rm --build --no-deps --name test_backend web python manage.py makemigrations users"
+                sh "docker-compose run --rm --build --no-deps --name test_backend web python manage.py migrate"
             }
         }
         stage('Test') {
             steps {
                 // run test
-                sh "docker-compose run --rm --no-deps --name test_backend web python manage.py test"
+                sh "docker-compose run --rm --build --no-deps --name test_backend web python manage.py test"
                 // create report
-                sh "docker-compose run --rm --no-deps --name test_backend web python manage.py jenkins"
+                sh "docker-compose run --rm --build --no-deps --name test_backend web python manage.py jenkins"
                 
             }
             
