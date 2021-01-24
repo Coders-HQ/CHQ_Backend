@@ -4,6 +4,7 @@ services:
   db:
     image: postgres
     container_name: backend_db
+    env_file: .env
     environment:
       - POSTGRES_DB=${DATABASE_NAME}
       - POSTGRES_USER=${DATABASE_USER}
@@ -18,6 +19,7 @@ services:
   web:
     build: .
     container_name: backend_django
+    env_file: .env
     environment:
       - DJANGO_DATABASE=postgres
     command: >
@@ -38,6 +40,7 @@ services:
     build: .
     container_name: backend_celery
     command: celery -A chq_backend worker -l INFO
+    env_file: .env
     volumes:
       - ".:/app/backend"
     depends_on:
