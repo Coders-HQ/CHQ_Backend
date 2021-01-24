@@ -96,6 +96,7 @@ CORS_ORIGIN_WHITELIST = [
     'https://codershq.ae',
     'http://codershq.ae',
     'http://localhost:33325',
+    'http://localhost:33324',
 ]
 ROOT_URLCONF = 'chq_backend.urls'
 
