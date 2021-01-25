@@ -6,52 +6,18 @@ pipeline {
             steps {
                 sh "cp ../.env ."
                 // create postgres
-                sh "docker-compose run --no-deps --name test_postgres -d db" 
-                // create redis
-                sh "docker-compose run --no-deps --name test_redis -d redis" 
-                // create celery
-                sh "docker-compose run --no-deps --name test_celery -d celery" 
-                // create web
-                sh "docker-compose run --no-deps --name test_web -d web" 
-                // make sure connection is made
-                sh 'sleep 10'
-                // migration data to postgres
-                sh "docker-compose run --rm --no-deps --name test_django web python manage.py makemigrations users"
-                sh "docker-compose run --rm --no-deps --name test_django web python manage.py migrate"
             }
 
-            post{
-                failure{
-                // clean images
-                // create postgres
-                sh "docker stop test_postgres" 
-                // create redis
-                sh "docker stop test_redis" 
-                // create celery
-                sh "docker stop test_celery" 
-                // create web
-                sh "docker stop test_web" 
-                sh "docker rm test_postgres" 
-                // create redis
-                sh "docker rm test_redis" 
-                // create celery
-                sh "docker rm test_celery" 
-                // create web
-                sh "docker rm test_web" 
-                }
-            }
         }
         stage('Test') {
             steps {
                 // run test
-                sh "docker-compose run --rm --no-deps --name test_django web python manage.py test"
-                // create report
-                sh "docker-compose run --rm --no-deps --name test_django web python manage.py jenkins"
-                
+                sh "docker-compose run --rm web python manage.py test"
+                sh "docker-compose run --rm web python manage.py jenkins"
             }
             
             post {
-                always {
+                success {
                     // save report
                     junit "reports/junit.xml"
                 }

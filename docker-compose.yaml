@@ -3,7 +3,6 @@ services:
   
   db:
     image: postgres
-    container_name: backend_db
     env_file: .env
     environment:
       - POSTGRES_DB=${DATABASE_NAME}
@@ -13,12 +12,10 @@ services:
       - /var/lib/codershq/postgres/:/var/lib/postgresql/data/
 
   redis:
-    container_name: backend_redis
     image: "redis:alpine"
   
   web:
     build: .
-    container_name: backend_django
     env_file: .env
     environment:
       - DJANGO_DATABASE=postgres
@@ -38,7 +35,6 @@ services:
 
   celery:
     build: .
-    container_name: backend_celery
     command: celery -A chq_backend worker -l INFO
     env_file: .env
     volumes:
@@ -48,7 +44,6 @@ services:
       - redis
 
   docs:
-    container_name: backend_mkdocs
     build: docs
     volumes: 
       - .:/docs
