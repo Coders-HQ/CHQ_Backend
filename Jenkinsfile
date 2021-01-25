@@ -5,6 +5,11 @@ pipeline {
         stage('Build') {
             steps {
                 sh "cp ../.env ."
+                sh "rm -rf users/CHQ_Scoring/"
+                sh "cd users"
+                sh "git clone https://github.com/Coders-HQ/CHQ_Scoring.git"
+                sh "cd .."
+
                 // create postgres
             }
 
