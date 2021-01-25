@@ -9,7 +9,8 @@ pipeline {
                 sh "cd users"
                 sh "git clone https://github.com/Coders-HQ/CHQ_Scoring.git"
                 sh "cd .."
-
+                sh "docker-compose run --rm web python manage.py test"
+                sh "docker-compose run --rm web python manage.py jenkins"
                 // create postgres
             }
 
