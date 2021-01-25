@@ -1,0 +1,577 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="This documentation site holds the Coders-HQ backend's information.">
+      
+      
+      
+      
+        <link rel="canonical" href="https://docs.codershq.ae/challenges/kaggle_case_study/">
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.5">
+    
+    
+      
+        <title>Kaggle Case Study - Coders HQ Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.15aa0b43.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.75751829.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+      
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kaggle-case-study" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="https://docs.codershq.ae" title="Coders HQ Documentation" class="md-header-nav__button md-logo" aria-label="Coders HQ Documentation">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      <div class="md-header-nav__ellipsis">
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            Coders HQ Documentation
+          </span>
+        </div>
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            
+              Kaggle Case Study
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/Coders-HQ/CHQ_Backend/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://docs.codershq.ae" title="Coders HQ Documentation" class="md-nav__button md-logo" aria-label="Coders HQ Documentation">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Coders HQ Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/Coders-HQ/CHQ_Backend/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1" checked>
+      
+      <label class="md-nav__link" for="nav-1">
+        Challenges
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Challenges" data-md-level="1">
+        <label class="md-nav__title" for="nav-1">
+          <span class="md-nav__icon md-icon"></span>
+          Challenges
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Kaggle Case Study
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Kaggle Case Study
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#competition-formats" class="md-nav__link">
+    Competition Formats
+  </a>
+  
+    <nav class="md-nav" aria-label="Competition Formats">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simple-competitions" class="md-nav__link">
+    Simple Competitions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#two-stage-competitions" class="md-nav__link">
+    Two-stage Competitions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-competitions" class="md-nav__link">
+    Code Competitions
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#joining-a-competition" class="md-nav__link">
+    Joining a Competition
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#forming-a-team" class="md-nav__link">
+    Forming a Team
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#leaderboard" class="md-nav__link">
+    Leaderboard
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    Summary
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../news/" class="md-nav__link">
+        News
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#competition-formats" class="md-nav__link">
+    Competition Formats
+  </a>
+  
+    <nav class="md-nav" aria-label="Competition Formats">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simple-competitions" class="md-nav__link">
+    Simple Competitions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#two-stage-competitions" class="md-nav__link">
+    Two-stage Competitions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-competitions" class="md-nav__link">
+    Code Competitions
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#joining-a-competition" class="md-nav__link">
+    Joining a Competition
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#forming-a-team" class="md-nav__link">
+    Forming a Team
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#leaderboard" class="md-nav__link">
+    Leaderboard
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    Summary
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/Coders-HQ/CHQ_Backend/?query=docs/challenges/kaggle_case_study.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="kaggle-case-study">Kaggle Case Study</h1>
+<p><img src="data:image/png;base64,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" class="uml" alt="uml diagram" title="" /></p>
+<p>Kaggle has four main types of challenges; <strong>Featured</strong>, <strong>Research</strong>, <strong>Getting started</strong> and <strong>Playground</strong>. Featured competition are targeted towards commercial while research challenges are more experimental. Getting started challenge category which is more user-friendly, simple but offer no prizes. Playground is a bit more advanced than Getting started but less complicated than Featured. It offers prizes that "range from kudos to small cash prizes".</p>
+<p><strong>Getting started</strong> category has a smaller pool of leader-boards, that way new joiners can compare themselves with less people instead of thousands that may have a score in a certain challenge.</p>
+<blockquote>
+<p>Featured competitions are the types of competitions that Kaggle is probably best known for. These are full-scale machine learning challenges which pose difficult, generally commercially-purposed prediction problems.</p>
+</blockquote>
+<p>Feature challenges also offer prize money that can go up to 1 million dollar and is accessible by anyone.</p>
+<p>Kaggle also offers <strong>Recruitment</strong> challenges that are more targeted towards companies to "to build machine learning models for corporation-curated challenges".</p>
+<blockquote>
+<p>In Recruitment competitions, teams of size one compete to build machine learning models for corporation-curated challenges. At the competition’s close, interested participants can upload their resume for consideration by the host. The prize is (potentially) a job interview at the company or organization hosting the competition.</p>
+</blockquote>
+<h2 id="competition-formats">Competition Formats</h2>
+<p>In addition to the different categories of competitions (e.g., “featured”), there are also a handful of different formats competitions are run in.</p>
+<h3 id="simple-competitions">Simple Competitions</h3>
+<p>In a simple competition, users can access the complete datasets at the beginning of the competition, after accepting the competition’s rules. As a competitor you will download the data, build models on it locally or in <a href="https://www.kaggle.com/notebooks">Notebooks</a>, generate a prediction file, then upload your predictions as a submission on Kaggle. By far most competitions on Kaggle follow this format.</p>
+<h3 id="two-stage-competitions">Two-stage Competitions</h3>
+<p>In two-stage competitions the challenge is split into two parts: Stage 1 and Stage 2, with the second stage building on the results teams achieved in Stage 1. Stage 2 involves a new test dataset that is released at the start of the stage.</p>
+<p>One example of such a competition is the <a href="https://www.kaggle.com/c/the-nature-conservancy-fisheries-monitoring">Nature Conservancy Fisheries Monitoring Competition</a>.</p>
+<h3 id="code-competitions">Code Competitions</h3>
+<p>Some competitions are code competitions. In these competitions all submissions are made from inside of a Kaggle Notebook, and it is not possible to upload submissions to the Competition directly.</p>
+<p>These competitions have two attractive features. The competition is more balanced, as all users have the same hardware allowances. And the winning models tend to be far simpler than the winning models in other competitions, as they must be made to run within the compute constraints imposed by the platform.</p>
+<p>Hardware restrictions may be implemented for this format.</p>
+<p>An example of a code competition is <a href="https://www.kaggle.com/c/quora-insincere-questions-classification">Quora Insincere Questions Classification</a>.</p>
+<h2 id="joining-a-competition">Joining a Competition</h2>
+<p>Each competition in Kaggle has a homepage. This is an example of one.</p>
+<p><img alt="" src="https://lh5.googleusercontent.com/JvG9wjqimR6nh1z2N-mIjqWv6mA2IUpZ0x7Pwkg56_sC_A7NBA6eb40fCLTpQ65ol_hJLBP2eaMYmAT8q074-ElKirjm6iMMVq7lSltStpRfj3tisLac-5EeU27GFYg1JysZ4n_H" /></p>
+<p><strong>Rules</strong>:  This contains the rules that govern your participation in the sponsor’s competition. You must accept the competition’s rules before downloading the data or making any submissions. Users who do not abide by the rules may have their submissions invalidated at the end of the competition or banned from the platform.</p>
+<p><strong>Discussion</strong>: If anything is unclear or you have a question about participating, the competition’s forums are the perfect place to ask.</p>
+<p><strong>Overview</strong>: The information provided in the Overview tabs will vary from Competition to Competition. Five elements which are almost always included and should be reviewed are the “Description,” “Data”, “Evaluation,” “Timeline,” &amp; “Prizes” sections.</p>
+<p>The <strong>description</strong> gives an introduction into the competition’s objective and the sponsor’s goal in hosting it.</p>
+<p>The <strong>data</strong> tab is where you can download and learn more about the data used in the competition.</p>
+<p>The <strong>evaluation</strong> section describes how to format your submission file and how your submissions will be evaluated. </p>
+<p>The <strong>timeline</strong> has detailed information on the competition timeline.</p>
+<p>The <strong>prizes</strong> section provides a breakdown of what prizes will be awarded to the winners, if prizes are relevant. This may come in the form of monetary, swag, or other perks. In addition to prizes, competitions may also award ranking points towards the Kaggle progression system. This is shown at the bottom of the Overview page.</p>
+<p>Once you have chosen a competition, read and accepted the rules, and made yourself aware of the competition deadlines, you are ready to submit!</p>
+<h2 id="forming-a-team">Forming a Team</h2>
+<p>Everyone that competes in a Competition does so as a team. A team is a group of one or more users who collaborate on the competition. </p>
+<p>Weather you are on a team or not, submissions are limited per team.</p>
+<p><strong>Team Leader</strong>: They are the primary point of contact when we need to communicate with a team, every other person in the team is a Member.</p>
+<p><strong>Team Name</strong>: Anyone in the team can modify the team name by visiting the Team tab.</p>
+<h2 id="leaderboard">Leaderboard</h2>
+<p>One of the most important aspects of Kaggle Competitions is the Leaderboard:</p>
+<p><img alt="" src="https://lh3.googleusercontent.com/4IWRQx5munaM7OjDxHecuxHxjaL8YJz_2v3nGw_PX1h-vrhvC0f_cmlQI0hOuQ2rBQWlwVYR-SJd6PAcepi4lgzIN1mgaLS5QhqqUKnsix8vmCRvi6ZOILgd0haPbYhlXgLerNKl" /></p>
+<p>The Competition leaderboard has two parts.</p>
+<p>The <strong>public leaderboard</strong> provides publicly visible submission scores based on a representative sample of the submitted data. This leaderboard is visible throughout the competition.</p>
+<p>The <strong>private leaderboard</strong>, by contrast, tracks model performance on data unseen by participants. The private leaderboard thus has final say on whose models are best, and hence, who the winners and losers of the Competition will be.</p>
+<h2 id="summary">Summary</h2>
+<p>Kaggle competition is aimed more towards machine learning and they have tools to upload data and use online notebooks which are written using python or R language only. They also have additional features:</p>
+<ul>
+<li>Teams</li>
+<li>Four challenge types</li>
+<li>Prizes that range from 'flairs' to large sums of money</li>
+<li>Leader boards</li>
+<li>Notebooks; user-friendly way to start coding </li>
+<li>Ways for commercial companies to make challenges</li>
+</ul>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+        
+          <a href="../../news/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                News
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/vendor.93c04032.min.js"></script>
+      <script src="../../assets/javascripts/bundle.83e5331e.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "../..",
+          features: [],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.8c7e0a7e.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>
